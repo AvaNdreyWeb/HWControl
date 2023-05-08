@@ -180,8 +180,17 @@ def get_lesson(date: datetime.date, db: Session = Depends(get_db)):
     if not db_lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
     db_students = crud.get_students_by_group(db, db_lesson.group_id)
-    db_lesson.students = db_students
-    return db_lesson
+    lesson = schemas.Lesson(
+        id=db_lesson.id,
+        date=db_lesson.date,
+        title=db_lesson.title,
+        group_id=db_lesson.group_id,
+        homework=db_lesson.homework,
+        is_active=db_lesson.is_active,
+        control=db_lesson.status,
+        students = db_students
+    )
+    return lesson
 
 @app.put(
     "/lessons/{date}",
