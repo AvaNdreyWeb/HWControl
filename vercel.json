@@ -1,0 +1,12 @@
+{
+  "build": {
+    "hwc/main.py",
+    "use": "@vercel/python"
+  },
+  "routers": [
+    {
+      "src": "/(.*)",
+      "dest": "hwc/main.py"
+    }
+  ]
+}
