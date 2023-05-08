@@ -1,5 +1,5 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Date, Table
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import UUID, JSON
 from sqlalchemy.orm import relationship
 
 from .database import Base, engine
@@ -41,6 +41,8 @@ class Lesson(Base):
     title = Column(String)
     homework = Column(String)
     group_id = Column(String, ForeignKey("groups.id"))
+
+    status = Column(JSON)
 
     group = relationship("Group", back_populates="lessons")
 
