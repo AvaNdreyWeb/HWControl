@@ -12,8 +12,16 @@ def create_lesson(db: Session, lesson: schemas.LessonCreate):
     control = dict()
     for student in students:
         control[str(student.id)] = [False, False]
-    db_lesson_schema = schemas.LessonDB(**lesson.dict(), id=f'{lesson.date}', is_active=True, status=control)
-    db_lesson = models.Lesson(**db_lesson_schema.dict())
+    db_lesson_schema = schemas.LessonDB(**lesson.dict(), id=f'{lesson.date}', is_active=True, control=control)
+    db_lesson = models.Lesson(
+        id = db_lesson_schema.id,
+        is_active = db_lesson_schema.is_active,
+        date = db_lesson_schema.date,
+        title = db_lesson_schema.title,
+        homework = db_lesson_schema.homework,
+        group_id = db_lesson_schema.group_id,
+        status=db_lesson_schema.control
+    )
     db.add(db_lesson)
     db.commit()
     db.refresh(db_lesson)
