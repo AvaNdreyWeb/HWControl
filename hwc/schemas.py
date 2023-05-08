@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import date
-from typing import Dict
+from typing import Dict, Union
 from uuid import UUID
 
 class GroupBase(BaseModel):
@@ -64,7 +64,7 @@ class LessonBase(BaseModel):
     title: str
     group_id: str
     date: date
-    homework: str | None = None
+    homework: Union[str, None] = None
 
 
 class LessonCreate(LessonBase):

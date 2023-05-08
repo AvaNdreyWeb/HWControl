@@ -2,7 +2,7 @@ import datetime
 import re
 from fastapi import Depends, FastAPI, HTTPException, Query, Body
 from sqlalchemy.orm import Session
-from typing import Dict, Annotated
+from typing import Dict, Annotated, Union
 
 from . import crud, models, schemas
 from .database import SessionLocal, engine
@@ -95,9 +95,9 @@ def create_group(group: schemas.GroupCreate, db: Session = Depends(get_db)):
     }
 )
 def get_groups(
-    page: Annotated[int | None, Query(gt=0)] = 1,
-    limit: int | None = 10,
-    filter: str | None = "title",
+    page: Annotated[Union[int, None], Query(gt=0)] = 1,
+    limit: Union[int, None] = 10,
+    filter: Union[str, None] = "title",
     db: Session = Depends(get_db)
 ):
     """
@@ -297,8 +297,8 @@ def create_student(
     }
 )
 def get_students(
-    page: Annotated[int | None, Query(gt=0)] = 1,
-    limit: int | None = 10,
+    page: Annotated[Union[int, None], Query(gt=0)] = 1,
+    limit: Union[int, None] = 10,
     db: Session = Depends(get_db)
 ):
     """
