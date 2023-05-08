@@ -72,7 +72,7 @@ def get_students(db: Session, page: int = 1, limit: int = 10):
 def get_students_by_group(db: Session, group_id: str):
     group_db = db.query(models.Group).filter(models.Group.id == group_id).first()
     if group_db:
-        return students
+        return group_db.students
     return []
 
 # Group
