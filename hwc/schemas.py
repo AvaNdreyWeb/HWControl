@@ -90,7 +90,7 @@ class LessonDB(LessonBase):
 
 
 class Lesson(LessonDB):
-    students: list[Student]
+    students: list[StudentDB]
 
     class Config:
         schema_extra = {
