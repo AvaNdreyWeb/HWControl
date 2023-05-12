@@ -8,7 +8,7 @@ from . import crud, models, schemas
 from .database import SessionLocal, engine
 
 from aiogram import types, Dispatcher, Bot
-from bot import dp, bot, TOKEN
+from .bot import dp, bot, TOKEN
 
 models.Base.metadata.create_all(bind=engine)
 
