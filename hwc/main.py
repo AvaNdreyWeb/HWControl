@@ -355,7 +355,7 @@ def get_month_dates_status(year: int, month: int, db: Session = Depends(get_db))
 
 
 WEBHOOK_PATH = f"/bot/{TOKEN}"
-WEBHOOK_URL = "https://hw-control.vercel.app/" + WEBHOOK_PATH
+WEBHOOK_URL = "https://hw-control-git-tg-bot-avandreyweb.vercel.app" + WEBHOOK_PATH
 
 
 @app.on_event("startup")
