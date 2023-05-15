@@ -394,4 +394,6 @@ async def on_shutdown():
 
 @app.post('/bot/subscribe')
 def subscribe(data: Dict[str, str], db: Session = Depends(get_db)):
-    return crud.update_subscribe(db, data)
+    ans = crud.update_subscribe(db, data)
+    send_message_to_user(data['chat_id'], ans['code'])
+    return ans

@@ -10,7 +10,7 @@ dp = Dispatcher(bot)
 
 
 START_MSG = (
-    'Hello, I am a bot designed to'
+    'Hello, I am a bot designed to '
     'track homework and class attendance.'
     '\n'
     'Please enter the code of the student you want to track.'
