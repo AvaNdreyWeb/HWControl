@@ -244,17 +244,19 @@ async def finish_lesson(
     crud.deactivate_lesson(db, date, control)
     subscriptions = crud.get_subscriptions(db)
     chats = []
+    debug = []
     if subscriptions:
         for student_id in control:
             present = control[student_id][0]
             hw_done = control[student_id][1]
             for subscription in subscriptions:
+                debug.append([subscription.student_id, student_id, subscription.student_id==student_id, str(subscription.student_id)==str(student_id)])
                 if subscription.student_id == student_id:
                     chats.append([subscription.chat_id, present, hw_done])
         for chat in chats:
             msg = f'present: {chat[1]}\nhw_done: {chat[2]}'
             await send_message_to_user(chat[0], msg)
-    return {"detail": "Lesson successfully finished", 'debug': [subscriptions, chats]}
+    return {"detail": "Lesson successfully finished", 'debug': debug}
 
 # students
 @app.post(
