@@ -197,7 +197,7 @@ def get_lesson(date: datetime.date, db: Session = Depends(get_db)):
 
 @app.put(
     "/lessons/{date}",
-    response_model=schemas.SuccessPostResponse,
+    #response_model=schemas.SuccessPostResponse,
     tags=["lessons"],
     summary="Finish current lesson",
     responses={
@@ -254,7 +254,7 @@ async def finish_lesson(
         for chat in chats:
             msg = f'present: {chat[1]}\nhw_done: {chat[2]}'
             await send_message_to_user(chat[0], msg)
-    return {"detail": "Lesson successfully finished"}
+    return {"detail": "Lesson successfully finished", 'debug': [subscriptions, chats]}
 
 # students
 @app.post(
