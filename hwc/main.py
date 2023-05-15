@@ -217,7 +217,7 @@ def get_lesson(date: datetime.date, db: Session = Depends(get_db)):
         },
     }
 )
-def finish_lesson(
+async def finish_lesson(
     date: datetime.date,
     control: Annotated[Dict[str, list[bool]], Body(example={
                 "UUID_1": [
@@ -253,7 +253,7 @@ def finish_lesson(
                     chats.append([subscription.chat_id, present, hw_done])
         for chat in chats:
             msg = f'present: {chat[1]}\nhw_done: {chat[2]}'
-            send_message_to_user(chat[0], msg)
+            await send_message_to_user(chat[0], msg)
     return {"detail": "Lesson successfully finished"}
 
 # students
