@@ -3,8 +3,7 @@ import os
 import requests
 from aiogram import Bot, Dispatcher, types
 
-from .main import SERVER
-
+SERVER = "https://hw-control-git-tg-bot-avandreyweb.vercel.app"
 TOKEN = os.environ.get("TG_BOT_TOKEN")
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
