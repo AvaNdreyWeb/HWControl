@@ -8,7 +8,7 @@ from . import crud, models, schemas
 from .database import SessionLocal, engine
 
 from aiogram import types, Dispatcher, Bot
-from .bot import dp, bot, TOKEN
+from .bot import dp, bot, TOKEN, send_message_to_user
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -242,6 +242,18 @@ def finish_lesson(
     if not db_lesson:
         raise HTTPException(status_code=404, detail="Lesson not found")
     crud.deactivate_lesson(db, date, control)
+    subscriptions = crud.get_subscriptions(db)
+    chats = []
+    if subscriptions:
+        for student_id in control:
+            present = control[student_id][0]
+            hw_done = control[student_id][1]
+            for subscription in subscriptions:
+                if subscription.student_id == student_id:
+                    chats.append([subscription.chat_id, present, hw_done])
+        for chat in chats:
+            msg = f'present: {chat[1]}\nhw_done: {chat[2]}'
+            send_message_to_user(chat[0], msg)
     return {"detail": "Lesson successfully finished"}
 
 # students
@@ -350,12 +362,12 @@ def get_students(
     }
 )
 def get_month_dates_status(year: int, month: int, db: Session = Depends(get_db)):
-    dates = crud.get_current_month(db, year, month)
-    return dates
+    return crud.get_current_month(db, year, month)
 
 
+SERVER = "https://hw-control-git-tg-bot-avandreyweb.vercel.app"
 WEBHOOK_PATH = f"/bot/{TOKEN}"
-WEBHOOK_URL = "https://hw-control-git-tg-bot-avandreyweb.vercel.app" + WEBHOOK_PATH
+WEBHOOK_URL = SERVER + WEBHOOK_PATH
 
 
 @app.on_event("startup")
@@ -378,3 +390,8 @@ async def bot_webhook(update: dict):
 @app.on_event("shutdown")
 async def on_shutdown():
     await bot.session.close()
+
+
+@app.post('/bot/subscribe')
+def subscribe(data: Dict[str, str], db: Session = Depends(get_db)):
+    return crud.update_subscribe(db, data)

@@ -101,3 +101,26 @@ def get_current_month(db: Session, y: int, m: int):
     last = (date(y, m, 1) - date(y, m+1, 1)).days
     db_lessons = db.query(models.Lesson).filter(models.Lesson.date >= f'{y}-{m}-01', models.Lesson.date <= f'{y}-{m}-{last}').all()
     return [{x.id: x.is_active} for x in db_lessons]
+
+
+def update_subscribe(db: Session, data: Dict[str, str]):
+    student_id_db = db.query(models.Student).filter(models.Student.id == data['student_id']).first()
+    if not student_id_db:
+        return {'code': 'err'}
+    db_chat_id = db.query(models.Subscription).filter(models.Subscription.chat_id == data['chat_id']).first()
+    if not db_chat_id:
+        db_chat_id = models.Subscription(
+            student_id=data['student_id'],
+            chat_id=data['chat_id']
+        )
+    else:
+        db_chat_id.student_id = data['student_id']
+
+    db.add(db_chat_id)
+    db.commit()
+    db.refresh(db_chat_id)
+    return {'code': 'ok'}
+
+
+def get_subscriptions(db: Session):
+    return db.query(models.Subscription).all()

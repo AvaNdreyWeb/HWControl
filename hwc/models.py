@@ -46,4 +46,12 @@ class Lesson(Base):
 
     group = relationship("Group", back_populates="lessons")
 
+
+class Subscription(Base):
+    __tablename__ = 'subscription'
+
+    student_id = Column(UUID(as_uuid=True))
+    chat_id = Column(String, primary_key=True)
+
+
 Base.metadata.create_all(engine)
