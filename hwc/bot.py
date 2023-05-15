@@ -29,7 +29,7 @@ async def subscribe(message: types.Message):
         'chat_id': str(message.chat.id)
     }
     response = requests.post(f'{SERVER}/bot/subscribe', json=data)
-    await message.answer(response['code'])
+    await message.answer(response.json()['code'])
     ok_msg = f'You successfuly subscribed on:\n<b>{message.text}</b>'
     await message.answer(ok_msg, parse_mode='HTML')
 
